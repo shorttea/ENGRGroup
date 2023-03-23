@@ -16,7 +16,7 @@ southernStates = ['California', 'Arizona', 'New Mexico', 'Texas',
                   'Florida']
 
 # Repeat until the user enters a valid state
-while true:
+while True:
     # Get the user's state
     state = input("What state do you live in? ")
     # Variable will be used to curate power reduction tips to the user
@@ -33,4 +33,4 @@ while true:
     else:
         print("Please input a valid state")
 
-print("Done.")
+print(user_region)
