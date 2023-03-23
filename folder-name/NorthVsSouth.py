@@ -19,18 +19,19 @@ southernStates = ['California', 'Arizona', 'New Mexico', 'Texas',
 while True:
     # Get the user's state
     state = input("What state do you live in? ")
+
     # Variable will be used to curate power reduction tips to the user
     user_region = ""
 
-    if state in northernStates:
+    if state.capitalize() in northernStates:
         user_region = "N"
         break
 
-    elif state in southernStates:
+    elif state.capitalize() in southernStates:
         user_region = "S"
         break
 
     else:
-        print("Please input a valid state")
+        print("Please input a valid state\n")
 
 print(user_region)
