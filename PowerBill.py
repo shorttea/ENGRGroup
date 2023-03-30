@@ -10,7 +10,7 @@ def PowerBill(stateIn, powerIn, nameIn, yn, requestIn):
     f.write("\n-------------------------------------------------------"
             "-----------------------------------------------------------------------------------------------------\n")
     #opens file with state names and average power use to read
-    rf = open("StatesandPower.txt", "r")
+    rf = open("folder-name/StatesandPower.txt", "r")
     lines = rf.read()
     sparse_lines = lines.split()
     
