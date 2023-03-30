@@ -19,7 +19,6 @@ def btn_clicked(): #all of btn_clicked() by Carly
     stateName = name.get() #retrieves the user's input of their state
     #read states file:
     legalNameStates = open('states.csv')
-    #legalNameStates = open(r"states.csv")
     avg_list_maker3 = csv.reader(legalNameStates) #converts States File into list of states
     for row in avg_list_maker3: #checking if the state input is in our States File
         if stateName not in row:
@@ -32,7 +31,6 @@ def btn_clicked(): #all of btn_clicked() by Carly
 
     #formats State Electricity Usage File into list:
     usageList = open('newUsage.csv')
-    #usageList = open(r"newUsage.csv")
     avg_list_maker = csv.reader(usageList)
     usageList = []
 
