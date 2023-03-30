@@ -142,7 +142,7 @@ def next1Button():
 #inputted electricity usage against their state's electricity
 #usage.
 
-#Ryan: If user's usage higher than the state's, run a function
+#Julia: If user's usage higher than the state's, run a function
 # that asks the user to check boxes if they do certain energy
 # wasting habits, kind of like a mini survey.
 # Based on these results and whether the state is northern or southern
