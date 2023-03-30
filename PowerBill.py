@@ -25,6 +25,7 @@ def PowerBill(stateIn, powerIn, nameIn, yn, requestIn):
     else:
         f.write(f'Monthly Power Usage of {power} is equal to state average')
     if yn == "yes":
-        f.write(f'\n\nREMINDER\nReminder to turn off {request}. Doing so will reduce your power '
-                f'usage and limit your CO2 output')
+        f.write(f'\n\nREMINDER\n
+       ------------------------------------------------------------------------------------------------------------------------------------------------------------\n
+        Reminder to turn off {request}. Doing so will reduce your power usage and limit your CO2 output')
 
