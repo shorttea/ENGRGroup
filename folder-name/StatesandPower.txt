@@ -1,5 +1,3 @@
-Alphabetical: Numerical: 
-StateAvg.MonthlyElectricityUsage StateAvg.MonthlyElectricityUsage 
 Alabama
 1145
 Alaska
