@@ -45,7 +45,7 @@ def btn_clicked(): #all of btn_clicked() by Carly
     # to a list in order to later use the abbreviations as
     # the labels for the x-axis on the graph of States' Monthly
     # Avg Electricity Usage:
-    statesList = open(r"C:\Users\carly\Downloads\Computer Science\stateAbbreviations.txt")
+    statesList = open("stateAbbreviations.csv")
     avg_list_maker2 = csv.reader(statesList)
 
     for row in avg_list_maker2:  #ensures the data correctly gets put in list
@@ -81,8 +81,16 @@ def btn_clicked(): #all of btn_clicked() by Carly
     ask4yours.grid()
     ask4yours.place(x=750, y=570, anchor="center")
 
+    # Carly: calls the NEXT button function so that the button
+    # appears and operates on the GUI; button opens new frame
+    # asking for user's personal energy usage
+    next1Button()
 
-        
+def next_clicked():
+    framePersonalUsage = Frame(root, width=1500, height=800)
+    framePersonalUsage.grid()
+
+
 
 
 #Carly: GUI base
@@ -128,7 +136,7 @@ def enterButton():
 #pull up a request for the user's own electricity usage
 def next1Button():
     btn2 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next_clicked()))
-    btn2.place(x = 750, y = 450, anchor = 'center')
+    btn2.place(x = 750, y = 625, anchor = 'center')
 
 
 #Noah: going to create a function that labels the state as
@@ -154,6 +162,9 @@ def next1Button():
 #Carly: calls the ENTER button function so that the button
 # appears and operates on the GUI
 enterButton()
+
+
+
 
 
 #Carly: makes sure the window displays in an infinite loop
