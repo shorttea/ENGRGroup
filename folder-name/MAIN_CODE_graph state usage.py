@@ -4,6 +4,7 @@ import tkinter
 from tkinter import *
 from tkinter.messagebox import showinfo
 from PIL import ImageTk, Image
+import sv_ttk
 
 
 #This is the function for when the "ENTER" button
@@ -16,6 +17,7 @@ from PIL import ImageTk, Image
 # is then pulled up with the user's state highlighted
 # on the graph.
 def btn_clicked(): #all of btn_clicked() by Carly
+    global stateName
     stateName = name.get() #retrieves the user's input of their state
     #read states file:
     legalNameStates = open('states.csv')
@@ -58,6 +60,9 @@ def btn_clicked(): #all of btn_clicked() by Carly
     # y-values
     plt.plot(states, usageList, 'c', alpha=0.5)
 
+
+    global avgStateEnergy
+    avgStateEnergy = usageList[position]
     #x,y, and title labels on the graph:
     plt.xlabel('States')
     plt.ylabel(f'Monthly Avg Electricity\n Usage per Household (kWh)')
@@ -77,66 +82,176 @@ def btn_clicked(): #all of btn_clicked() by Carly
     avgStateUsage['text'] = f"{stateName}'s average monthly electricity usage is {usageList[position]} kWh."
 
     #Label on GUI that prints a statement prepping the user to enter their own electricity usage
-    ask4yours = Label(root, text=f"Let's see how your electricity usage compares!", font=("calibre", 35))
+    ask4yours = Label(root, text=f"Let's see how your electricity usage compares!", font=("sylfaen", 35))
     ask4yours.grid()
-    ask4yours.place(x=750, y=570, anchor="center")
+    ask4yours.place(x=750, y=460, anchor="center")
 
     # Carly: calls the NEXT button function so that the button
     # appears and operates on the GUI; button opens new frame
     # asking for user's personal energy usage
     next1Button()
 
+
+
+
+
 def next_clicked():
+
+
+
     framePersonalUsage = Frame(root, width=1500, height=800)
     framePersonalUsage.grid()
+    personalEnergy = tkinter.StringVar(framePersonalUsage)
+
+    # main title
+    underline = Label(framePersonalUsage, text="_____________________________________________", font=("Castellar", 45))
+    underline.grid()
+    underline.place(x=750, y=70, anchor="center")
+    titleLabel = Label(framePersonalUsage, text="Let's reduce your carbon footprint!", font=("Castellar", 45))
+    titleLabel.grid()
+    titleLabel.place(x=750, y=50, anchor="center")
+
+    # Carly: GUI entry box that asks for user input:
+    # the question:
+    userEnergyLabel = Label(framePersonalUsage, text="What was your energy usage for this month?", font=("sylfaen", 35))
+    userEnergyLabel.grid()
+    userEnergyLabel.place(x=750, y=150, anchor="center")
+    # the box itself:
+    userEnergyInput = Entry(framePersonalUsage, textvariable=personalEnergy, bd=5, width=50, relief="sunken", font=("sylfaen"))
+    userEnergyInput.grid(column=1, row=1)
+    userEnergyInput.place(x=750, y=220, anchor="center", height=50)
+    #energy units:
+    units = Label(framePersonalUsage, text="kWh", font=("sylfaen", 20))
+    units.grid()
+    units.place(x=980, y=200)
+
+
+
+    # Carly: ENTER button that pulls up the comparison of the user's personal energy
+    # usage to that of their state's:
+    def enterButtonUserEnergy():
+        btn3 = tkinter.Button(text='ENTER', bd=5, command=(lambda: PowerBill(stateName)))
+        btn3.place(x=750, y=280, anchor='center')
+
+    # written by Nathan = compares the user's personal energy usage
+    # to that of their state's so that they can get feedback on
+    # if they need to reduce their carbon footprint more
+    def PowerBill(stateIn):
+        #defining variables in function by different titles, so we could work
+        #on code separately
+        power1 = personalEnergy.get()
+        power = int(power1)
+        state = stateIn
+        average = avgStateEnergy
+
+        #reprinting label for state's energy use
+        stateAvgUsageLabel = Label(framePersonalUsage, text=(f"{state}'s Average Energy Usage: {average}kWh"),
+                                   font=("sylfaen", 35))
+        stateAvgUsageLabel.grid()
+        stateAvgUsageLabel.place(x=750, y=350, anchor="center")
+
+        #label for user's energy usage
+        userUsageLabel = Label(framePersonalUsage, text=(f"Your Average Energy Usage: {power}kWh"),
+                               font=("sylfaen", 35))
+        userUsageLabel.grid()
+        userUsageLabel.place(x=750, y=420, anchor="center")
+
+        #comparing the user's personal energy usage to the state
+        if power < average:
+            comparisonLabel = Label(framePersonalUsage,
+                                    text=(f"Monthly Energy Usage of {power} is lower than state average."),
+                                    font=("sylfaen", 30))
+            comparisonLabel.grid()
+            comparisonLabel.place(x=750, y=490, anchor="center")
+
+            congratsLabel = Label(framePersonalUsage, text=(f"Good job! You are limiting CO2 output!"),
+                                  font=("sylfaen", 30))
+            congratsLabel.grid()
+            congratsLabel.place(x=750, y=560, anchor="center")
+
+        elif power > average:
+            comparisonLabel = Label(framePersonalUsage,
+                                    text=(f"Caution! Monthly Power Usage of {power}kWh is higher than state average."),
+                                    font=("sylfaen", 30))
+            comparisonLabel.grid()
+            comparisonLabel.place(x=750, y=490, anchor="center")
+            fixLabel = Label(framePersonalUsage,
+                             text=(f"Let's see what we can do to lower that usage!"),
+                             font=("sylfaen", 30))
+            fixLabel.grid()
+            fixLabel.place(x=750, y=560, anchor="center")
+
+        else:
+            comparisonLabel = Label(framePersonalUsage,
+                                    text=(f"Monthly Power Usage of {power}kWh is equal to state average."),
+                                    font=("sylfaen", 30))
+            comparisonLabel.grid()
+            comparisonLabel.place(x=750, y=490, anchor="center")
+
+
+
+    enterButtonUserEnergy()
+
+
 
 
 
 
 #Carly: GUI base
+#root = ttkthemes.ThemedTk(theme='black')
 root = tkinter.Tk()
+sv_ttk.set_theme('dark')
 root.title('GUI')
 root.geometry('1500x800')
 
+
+
 #Carly: GUI intro title --> tells the user what the program is going to do:
-titleLabel = Label(root, text = "Let's reduce your carbon footprint!", font=("calibre", 45))
+underline = Label(root, text = "_____________________________________________", font=("Castellar", 45))
+underline.grid()
+underline.place(x = 750, y = 70, anchor="center")
+titleLabel = Label(root, text = "Let's reduce your carbon footprint!", font=("Castellar", 45))
 titleLabel.grid()
 titleLabel.place(x = 750, y = 50, anchor="center")
+
 
 #Carly: Empty GUI label for the print statement of the state energy usage.
 #I made this so that if the user wants to try to input different states,
 #the print statement saying the energy usage will actually change rather
 #than printing another label on top
-avgStateUsage = Label(root, text=f"", font=("calibre", 35))
+avgStateUsage = Label(root, text=f"", font=("sylfaen", 35))
 avgStateUsage.grid()
-avgStateUsage.place(x=750, y=500, anchor="center")
+avgStateUsage.place(x=750, y=390, anchor="center")
 
 #Carly: declaring string variable for storing stateName
 name = tkinter.StringVar(root)
+avgStateEnergy = None
+stateName = None
 
 
 #Carly: GUI entry box that asks for user input:
     #the question:
-stateInputLabel = Label(root, text = "What state do you live in?", font=("Arial", 35))
+stateInputLabel = Label(root, text = "What state do you live in?", font=("sylfaen", 35))
 stateInputLabel.grid()
-stateInputLabel.place(x = 750, y = 320, anchor="center")
+stateInputLabel.place(x = 750, y = 200, anchor="center")
     #the box itself:
-stateNameInput = Entry(root, textvariable = name, bd = 5, width=50, relief="sunken", font=("calibre"))
+stateNameInput = Entry(root, textvariable = name, bd = 5, width=50, relief="sunken", font=("sylfaen"))
 stateNameInput.grid(column =1, row =1)
-stateNameInput.place(x = 750, y = 390, anchor = "center", height= 50)
+stateNameInput.place(x = 750, y = 270, anchor = "center", height= 50)
 
 
 #Carly: function for the ENTER button to submit state name!
 def enterButton():
     btn = tkinter.Button(text = 'ENTER', bd = 5, command=(lambda: btn_clicked()))
-    btn.place(x = 750, y = 450, anchor = 'center')
+    btn.place(x = 750, y = 330, anchor = 'center')
+
 
 
 #Carly: not finished, but the function for the NEXT button that will
 #pull up a request for the user's own electricity usage
 def next1Button():
     btn2 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next_clicked()))
-    btn2.place(x = 750, y = 625, anchor = 'center')
+    btn2.place(x = 750, y = 535, anchor = 'center')
 
 
 #Noah: going to create a function that labels the state as
