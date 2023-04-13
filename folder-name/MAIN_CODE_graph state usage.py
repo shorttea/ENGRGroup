@@ -96,9 +96,7 @@ def btn_clicked(): #all of btn_clicked() by Carly
 
 
 def next_clicked():
-
-
-
+    global framePersonalUsage
     framePersonalUsage = Frame(root, width=1500, height=800)
     framePersonalUsage.grid()
     personalEnergy = tkinter.StringVar(framePersonalUsage)
@@ -159,7 +157,7 @@ def next_clicked():
         #comparing the user's personal energy usage to the state
         if power < average:
             comparisonLabel = Label(framePersonalUsage,
-                                    text=(f"Monthly Energy Usage of {power} is lower than state average."),
+                                    text=(f"Monthly Energy Usage of {power}kWh is lower than state average."),
                                     font=("sylfaen", 30))
             comparisonLabel.grid()
             comparisonLabel.place(x=750, y=490, anchor="center")
@@ -168,6 +166,9 @@ def next_clicked():
                                   font=("sylfaen", 30))
             congratsLabel.grid()
             congratsLabel.place(x=750, y=560, anchor="center")
+            next2Button()
+            framePersonalUsage.pack()
+
 
         elif power > average:
             comparisonLabel = Label(framePersonalUsage,
@@ -180,6 +181,9 @@ def next_clicked():
                              font=("sylfaen", 30))
             fixLabel.grid()
             fixLabel.place(x=750, y=560, anchor="center")
+            next2Button()
+            framePersonalUsage.pack()
+
 
         else:
             comparisonLabel = Label(framePersonalUsage,
@@ -187,10 +191,132 @@ def next_clicked():
                                     font=("sylfaen", 30))
             comparisonLabel.grid()
             comparisonLabel.place(x=750, y=490, anchor="center")
+            next2Button()
+            framePersonalUsage.pack()
 
 
 
     enterButtonUserEnergy()
+
+
+
+#Carly: window for user's habits that eventually provides feedback
+def next2_clicked():
+    framePersonalUsage.destroy()
+    frameHabits = Frame(root, width=1500, height=800)
+    frameHabits.grid()
+    frameHabits.tkraise()
+    #frameHabits.root.grid_propagate(False)
+    #personalEnergy = tkinter.StringVar(frameHabits)
+
+    # main title
+    underline = Label(frameHabits, text="_____________________________________________", font=("Castellar", 45))
+    underline.grid()
+    underline.place(x=750, y=70, anchor="center")
+    titleLabel = Label(frameHabits, text="Let's reduce your carbon footprint!", font=("Castellar", 45))
+    titleLabel.grid()
+    titleLabel.place(x=750, y=50, anchor="center")
+
+
+    # Carly: GUI entry box that asks for user input:
+    # the question:
+    instructionsLabel = Label(frameHabits, text="Check the boxes of habits that you do!", font=("sylfaen", 35))
+    instructionsLabel.grid()
+    instructionsLabel.place(x=750, y=150, anchor="center")
+    frameHabits.pack()
+
+    # Carly: GUI entry box that asks for user input:
+    # the question:
+    basedLabel = Label(frameHabits, text="We'll give you some feedback on how to reduce your energy usage based on your answers.", font=("sylfaen", 25))
+    basedLabel.grid()
+    basedLabel.place(x=750, y=220, anchor="center")
+
+    def foot(image):
+        img = Image.open(image)
+        imageResize = img.resize((300,300), Image.ANTIALIAS)
+        image = ImageTk.PhotoImage(imageResize)
+
+        imageLabel = Label(frameHabits, image=image)
+        imageLabel.image = image
+        imageLabel.place(x=150, y=450, anchor="center")
+    foot(r'IMG_1041.PNG')
+
+
+
+    #checkbox feedback
+    def c1_On(xValue, yValue, button, feedbackPhrase):
+        global footFill
+        global c1Text
+        habit1feedback = Label(frameHabits,
+                               text="",
+                               font=("sylfaen", 25))
+        habit1feedback.grid()
+        habit1feedback.place(x=xValue+400, y=yValue, anchor="center")
+        def footfill():
+            if footFill == 0:
+                foot(r'IMG_1041.PNG')
+            elif footFill == 1:
+                foot(r'IMG_1042.PNG')
+            elif footFill == 2:
+                foot(r'IMG_1043.PNG')
+            elif footFill == 3:
+                foot(r'IMG_1044.PNG')
+            else:
+                foot(r'IMG_1045.PNG')
+
+        if button['text']=='Yes':
+            footFill -= 1
+            button['text']='No'
+            habit1feedback['text'] = "  " * len(feedbackPhrase)
+            footfill()
+
+        else:
+            footFill += 1
+            button['text']='Yes'
+            habit1feedback['text'] = feedbackPhrase
+            footfill()
+
+
+    #1st checkbox
+    global c1Text
+    c1 = tkinter.Button(text=c1Text, bd=5, command=(lambda: c1_On(300,300,c1,'habit 1 feedback')), height = 2, width = 5)
+    c1.place(x=300, y=300, anchor='center')
+    c1QuestionLabel = Label(frameHabits,
+                        text='habit 1?',
+                        font=("sylfaen", 25))
+    c1QuestionLabel.grid()
+    c1QuestionLabel.place(x=400, y=300, anchor="center")
+
+    #2nd checkbox
+    global c2Text
+    c2 = tkinter.Button(text=c2Text, bd=5, command=(lambda: c1_On(300, 400, c2,'habit 2 feedback')), height=2, width=5)
+    c2.place(x=300, y=400, anchor='center')
+    c2QuestionLabel = Label(frameHabits,
+                            text='habit 2?',
+                            font=("sylfaen", 25))
+    c2QuestionLabel.grid()
+    c2QuestionLabel.place(x=400, y=400, anchor="center")
+
+    # 3nd checkbox
+    global c3Text
+    c3 = tkinter.Button(text=c3Text, bd=5, command=(lambda: c1_On(300, 500, c3, 'habit 3 feedback')), height=2, width=5)
+    c3.place(x=300, y=500, anchor='center')
+    c3QuestionLabel = Label(frameHabits,
+                            text='habit 3?',
+                            font=("sylfaen", 25))
+    c3QuestionLabel.grid()
+    c3QuestionLabel.place(x=400, y=500, anchor="center")
+
+    # 4th checkbox
+    global c4Text
+    c4 = tkinter.Button(text=c4Text, bd=5, command=(lambda: c1_On(300, 600, c4, 'habit 4 feedback')), height=2, width=5)
+    c4.place(x=300, y=600, anchor='center')
+    c4QuestionLabel = Label(frameHabits,
+                            text='habit 4?',
+                            font=("sylfaen", 25))
+    c4QuestionLabel.grid()
+    c4QuestionLabel.place(x=400, y=600, anchor="center")
+
 
 
 
@@ -227,6 +353,13 @@ avgStateUsage.place(x=750, y=390, anchor="center")
 name = tkinter.StringVar(root)
 avgStateEnergy = None
 stateName = None
+framePersonalUsage = None
+value = 0
+c1Text = "No"
+c2Text = "No"
+c3Text = "No"
+c4Text = "No"
+footFill = 0
 
 
 #Carly: GUI entry box that asks for user input:
@@ -247,11 +380,18 @@ def enterButton():
 
 
 
-#Carly: not finished, but the function for the NEXT button that will
+#Carly:the function for the NEXT button that will
 #pull up a request for the user's own electricity usage
 def next1Button():
     btn2 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next_clicked()))
     btn2.place(x = 750, y = 535, anchor = 'center')
+
+
+#Carly: the function for the NEXT button that will
+#pull up the checkboxes for user's habits
+def next2Button():
+    btn3 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next2_clicked()))
+    btn3.place(x = 750, y = 620, anchor = 'center')
 
 
 #Noah: going to create a function that labels the state as
