@@ -92,9 +92,6 @@ def btn_clicked(): #all of btn_clicked() by Carly
     next1Button()
 
 
-
-
-
 def next_clicked():
     global framePersonalUsage
     framePersonalUsage = Frame(root, width=1500, height=800)
@@ -122,7 +119,6 @@ def next_clicked():
     units = Label(framePersonalUsage, text="kWh", font=("sylfaen", 20))
     units.grid()
     units.place(x=980, y=200)
-
 
 
     # Carly: ENTER button that pulls up the comparison of the user's personal energy
@@ -194,10 +190,7 @@ def next_clicked():
             next2Button()
             framePersonalUsage.pack()
 
-
-
     enterButtonUserEnergy()
-
 
 
 #Carly: window for user's habits that eventually provides feedback
@@ -206,8 +199,7 @@ def next2_clicked():
     frameHabits = Frame(root, width=1500, height=800)
     frameHabits.grid()
     frameHabits.tkraise()
-    #frameHabits.root.grid_propagate(False)
-    #personalEnergy = tkinter.StringVar(frameHabits)
+
 
     # main title
     underline = Label(frameHabits, text="_____________________________________________", font=("Castellar", 45))
@@ -241,17 +233,15 @@ def next2_clicked():
         imageLabel.place(x=150, y=450, anchor="center")
     foot(r'IMG_1041.PNG')
 
-
-
     #checkbox feedback
     def c1_On(xValue, yValue, button, feedbackPhrase):
         global footFill
         global c1Text
         habit1feedback = Label(frameHabits,
                                text="",
-                               font=("sylfaen", 25))
+                               font=("sylfaen", 14))
         habit1feedback.grid()
-        habit1feedback.place(x=xValue+400, y=yValue, anchor="center")
+        habit1feedback.place(x=xValue+400, y=yValue)
         def footfill():
             if footFill == 0:
                 foot(r'IMG_1041.PNG')
@@ -264,63 +254,121 @@ def next2_clicked():
             else:
                 foot(r'IMG_1045.PNG')
 
-        if button['text']=='Yes':
+        if button['text']=='x':
             footFill -= 1
-            button['text']='No'
+            button['text']=''
             habit1feedback['text'] = "  " * len(feedbackPhrase)
             footfill()
 
         else:
             footFill += 1
-            button['text']='Yes'
+            button['text']='x'
             habit1feedback['text'] = feedbackPhrase
             footfill()
 
-
     #1st checkbox
     global c1Text
-    c1 = tkinter.Button(text=c1Text, bd=5, command=(lambda: c1_On(300,300,c1,'habit 1 feedback')), height = 2, width = 5)
+    c1 = tkinter.Button(text=c1Text, font = tkinter.font.Font(size=15), bd=5, command=(lambda: c1_On(10,325,c1,'- Remember to shut your lights off when you '
+                                                                             'leave that room or your house.')), height = 1, width = 3)
     c1.place(x=300, y=300, anchor='center')
     c1QuestionLabel = Label(frameHabits,
-                        text='habit 1?',
+                        text='Do you always leave your lights on?',
                         font=("sylfaen", 25))
     c1QuestionLabel.grid()
-    c1QuestionLabel.place(x=400, y=300, anchor="center")
+    c1QuestionLabel.place(x=350, y=275)
 
     #2nd checkbox
     global c2Text
-    c2 = tkinter.Button(text=c2Text, bd=5, command=(lambda: c1_On(300, 400, c2,'habit 2 feedback')), height=2, width=5)
+    c2 = tkinter.Button(text=c2Text, font = tkinter.font.Font(size=15), bd=5, command=(lambda: c1_On(10, 425, c2,'- Try shutting them off when you leave the'
+                                                                              ' room; open a window instead for a breeze;'
+                                                                              ' close your curtains to block heat from sun.')), height=1, width=3)
     c2.place(x=300, y=400, anchor='center')
     c2QuestionLabel = Label(frameHabits,
-                            text='habit 2?',
+                            text='Do you keep fans running?',
                             font=("sylfaen", 25))
     c2QuestionLabel.grid()
-    c2QuestionLabel.place(x=400, y=400, anchor="center")
+    c2QuestionLabel.place(x=350, y=375)
 
     # 3nd checkbox
     global c3Text
-    c3 = tkinter.Button(text=c3Text, bd=5, command=(lambda: c1_On(300, 500, c3, 'habit 3 feedback')), height=2, width=5)
+    c3 = tkinter.Button(text=c3Text, font = tkinter.font.Font(size=15), bd=5, command=(lambda: c1_On(10, 525, c3, '- Make sure your faucets are turned all '
+                                                                               'the way off after you use them; turn your water off when you '
+                                                                                 'brush your teeth.')), height=1, width=3)
     c3.place(x=300, y=500, anchor='center')
     c3QuestionLabel = Label(frameHabits,
-                            text='habit 3?',
+                            text='Do you leave your water running?',
                             font=("sylfaen", 25))
     c3QuestionLabel.grid()
-    c3QuestionLabel.place(x=400, y=500, anchor="center")
+    c3QuestionLabel.place(x=350, y=475)
 
     # 4th checkbox
     global c4Text
-    c4 = tkinter.Button(text=c4Text, bd=5, command=(lambda: c1_On(300, 600, c4, 'habit 4 feedback')), height=2, width=5)
+    c4 = tkinter.Button(text=c4Text, font = tkinter.font.Font(size=15), bd=5, command=(lambda: c1_On(10, 625, c4, '- When not using appliances, shut them off'
+                                                                               ' instead of letting them run all day for convenience.')), height=1, width=3)
     c4.place(x=300, y=600, anchor='center')
     c4QuestionLabel = Label(frameHabits,
-                            text='habit 4?',
+                            text='Do you leave nonessential appliances on (coffee maker, lamps, etc.)?',
                             font=("sylfaen", 25))
     c4QuestionLabel.grid()
-    c4QuestionLabel.place(x=400, y=600, anchor="center")
+    c4QuestionLabel.place(x=350, y=575)
+    frameHabits.pack()
+
+    # Carly: the function for the NEXT button that will
+    # pull up the final summary window
+    def finishedButton():
+        btn4 = tkinter.Button(text='DONE', bd=5, command=(lambda: finished_clicked()))
+        btn4.place(x=750, y=700, anchor='center')
+
+    def finished_clicked():
+        frameHabits.destroy()
+        finishFrame = Frame(root, width=1500, height=800)
+        finishFrame.grid()
+        finishFrame.tkraise()
+
+        # main title
+        underline = Label(finishFrame, text="_____________________________________________", font=("Castellar", 45))
+        underline.grid()
+        underline.place(x=750, y=70, anchor="center")
+        titleLabel = Label(finishFrame, text="Let's reduce your carbon footprint!", font=("Castellar", 45))
+        titleLabel.grid()
+        titleLabel.place(x=750, y=50, anchor="center")
+
+        # summary:
+        thankYouLabel = Label(finishFrame, text="Thank you for seeing what you can "
+                                                "\ndo to reduce your carbon footprint!", font=("sylfaen", 40))
+        thankYouLabel.grid()
+        thankYouLabel.place(x=750, y=200, anchor="center")
+        finishFrame.pack()
+
+        awarenessLabel = Label(finishFrame, text="Awareness through small adjustments "
+                                                 "\nis the first step to greater change!",
+                             font=("sylfaen", 30))
+        awarenessLabel.grid()
+        awarenessLabel.place(x=750, y=365, anchor="center")
+        finishFrame.pack()
+
+        def foot(image, x,y):
+            img = Image.open(image)
+            imageResize = img.resize((300, 300), Image.ANTIALIAS)
+            image = ImageTk.PhotoImage(imageResize)
+
+            imageLabel = Label(finishFrame, image=image)
+            imageLabel.image = image
+            imageLabel.place(x=x, y=y, anchor="center")
+
+        #feet
+        foot(r'IMG_1045.PNG', 500, 600)
+        foot(r'IMG_1041.PNG', 1000, 600)
 
 
+        arrow = Label(finishFrame, text="--->", font=("sylfaen", 35), fg="grey")
+        arrow.grid()
+        arrow.place(x=750, y=600, anchor="center")
 
+        rect = Canvas(finishFrame, width=250, height=200)
+        rect.create_rectangle(500, 500, 800, 800, fill='grey', outline='grey')
 
-
+    finishedButton()
 
 
 #Carly: GUI base
@@ -330,8 +378,6 @@ sv_ttk.set_theme('dark')
 root.title('GUI')
 root.geometry('1500x800')
 
-
-
 #Carly: GUI intro title --> tells the user what the program is going to do:
 underline = Label(root, text = "_____________________________________________", font=("Castellar", 45))
 underline.grid()
@@ -339,7 +385,6 @@ underline.place(x = 750, y = 70, anchor="center")
 titleLabel = Label(root, text = "Let's reduce your carbon footprint!", font=("Castellar", 45))
 titleLabel.grid()
 titleLabel.place(x = 750, y = 50, anchor="center")
-
 
 #Carly: Empty GUI label for the print statement of the state energy usage.
 #I made this so that if the user wants to try to input different states,
@@ -355,12 +400,11 @@ avgStateEnergy = None
 stateName = None
 framePersonalUsage = None
 value = 0
-c1Text = "No"
-c2Text = "No"
-c3Text = "No"
-c4Text = "No"
+c1Text = ""
+c2Text = ""
+c3Text = ""
+c4Text = ""
 footFill = 0
-
 
 #Carly: GUI entry box that asks for user input:
     #the question:
@@ -379,7 +423,6 @@ def enterButton():
     btn.place(x = 750, y = 330, anchor = 'center')
 
 
-
 #Carly:the function for the NEXT button that will
 #pull up a request for the user's own electricity usage
 def next1Button():
@@ -394,24 +437,6 @@ def next2Button():
     btn3.place(x = 750, y = 620, anchor = 'center')
 
 
-#Noah: going to create a function that labels the state as
-#northern or southern --> will be called for within
-#enterButton() so the user's state input can apply to it
-
-
-#Nathan: going to create a function that compares the user's
-#inputted electricity usage against their state's electricity
-#usage.
-
-#Julia: If user's usage higher than the state's, run a function
-# that asks the user to check boxes if they do certain energy
-# wasting habits, kind of like a mini survey.
-# Based on these results and whether the state is northern or southern
-# (maybe time of year as well if we end up making a function for that),
-# print ways to reduce these habits and their overall energy usage.
-#If user's usage lower than the state's, congratulate the user and ask
-#if they want to find out some ways they can reduce their usage even more.
-#If yes, refer to the function that runs when the user's usage is higher.
 
 
 #Carly: calls the ENTER button function so that the button
@@ -419,10 +444,8 @@ def next2Button():
 enterButton()
 
 
-
-
-
 #Carly: makes sure the window displays in an infinite loop
 # until closed out by user
 root.mainloop()
+
 
