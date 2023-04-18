@@ -27,12 +27,3 @@ def PowerBill(stateIn, powerIn, nameIn, yn, requestIn):
     if yn == "yes":
         f.write(f'\n\nREMINDER\nReminder to turn off {request}. Doing so will reduce your power '
                 f'usage and limit your CO2 output')
-
-
-if __name__ == "__main__":
-    s = input()
-    p = input()
-    n = input()
-    ynm = input()
-    r = input()
-    PowerBill(s, p, n, ynm, r)
