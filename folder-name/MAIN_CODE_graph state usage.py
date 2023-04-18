@@ -2,20 +2,19 @@ import csv
 import matplotlib.pyplot as plt
 import tkinter
 from tkinter import *
-from tkinter.messagebox import showinfo
 from PIL import ImageTk, Image
 import sv_ttk
 
 
-#This is the function for when the "ENTER" button
-# is clicked on the GUI.
-#When the button is clicked, the state name that
-# the user has entered is compared against a file that
-# contains state names.
-#A graph of all of the states' average monthly electricity
-# usage (also, within its own respective file)
-# is then pulled up with the user's state highlighted
-# on the graph.
+'''This is the function for when the "ENTER" button
+is clicked on the GUI.
+-When the button is clicked, the state name that
+the user has entered is compared against a file that
+contains state names.
+-A graph of all of the states' average monthly electricity
+usage (also, within its own respective file)
+is then pulled up with the user's state highlighted
+on the graph.'''
 def btn_clicked(): #all of btn_clicked() by Carly
     global stateName
     stateName = name.get() #retrieves the user's input of their state
@@ -25,10 +24,11 @@ def btn_clicked(): #all of btn_clicked() by Carly
     for row in avg_list_maker3: #checking if the state input is in our States File
         if stateName not in row:
             stateInputLabel['text'] = 'Please input a valid state with the format: "State"'
-            enterButton() #resets the ENTER button for a new state input
-        position = row.index(stateName) #saves the index position of the entered state so that the
-                                        #correct state electricity usage can be pulled from the
-                                        #Usage File
+            enterButton() #resets the ENTER button for a new state input if need be
+        position = row.index(stateName)
+        '''saves the index position of the entered state so that the
+        correct state electricity usage can be pulled from the
+        Usage File'''
 
 
     #formats State Electricity Usage File into list:
@@ -43,10 +43,10 @@ def btn_clicked(): #all of btn_clicked() by Carly
             usageList.append(finalNum)
 
 
-    #Imports a file of state abbreviations and converts it
-    # to a list in order to later use the abbreviations as
-    # the labels for the x-axis on the graph of States' Monthly
-    # Avg Electricity Usage:
+    '''Imports a file of state abbreviations and converts it
+    to a list in order to later use the abbreviations as
+    the labels for the x-axis on the graph of States' Monthly
+    Avg Electricity Usage:'''
     statesList = open("stateAbbreviations.csv")
     avg_list_maker2 = csv.reader(statesList)
 
@@ -54,10 +54,10 @@ def btn_clicked(): #all of btn_clicked() by Carly
         states = row
 
 
-    #Graphing the States' Monthly Avg Electricity Usage using
-    # state abbreviations list (states) as the x-axis values
-    # and the states' electricity usage (usageList) as the
-    # y-values
+    '''Graphing the States' Monthly Avg Electricity Usage using
+    state abbreviations list (states) as the x-axis values
+    and the states' electricity usage (usageList) as the
+    y-values'''
     plt.plot(states, usageList, 'c', alpha=0.5)
 
 
@@ -82,16 +82,16 @@ def btn_clicked(): #all of btn_clicked() by Carly
     avgStateUsage['text'] = f"{stateName}'s average monthly electricity usage is {usageList[position]} kWh."
 
     #Label on GUI that prints a statement prepping the user to enter their own electricity usage
-    ask4yours = Label(root, text=f"Let's see how your electricity usage compares!", font=("sylfaen", 35))
-    ask4yours.grid()
-    ask4yours.place(x=750, y=460, anchor="center")
+    label("ask4yours", root, f"Let's see how your electricity usage compares!", 35, 750, 460)
 
-    # Carly: calls the NEXT button function so that the button
-    # appears and operates on the GUI; button opens new frame
-    # asking for user's personal energy usage
+    '''Calls the NEXT button function so that the button
+    appears and operates on the GUI; button opens new frame
+    asking for user's personal energy usage'''
     next1Button()
 
 
+#window 2: comparing user's electricity usage to state average
+#base code by Nathan, GUI implementation by Carly
 def next_clicked():
     global framePersonalUsage
     framePersonalUsage = Frame(root, width=1500, height=800)
@@ -99,37 +99,28 @@ def next_clicked():
     personalEnergy = tkinter.StringVar(framePersonalUsage)
 
     # main title
-    underline = Label(framePersonalUsage, text="_____________________________________________", font=("Castellar", 45))
-    underline.grid()
-    underline.place(x=750, y=70, anchor="center")
-    titleLabel = Label(framePersonalUsage, text="Let's reduce your carbon footprint!", font=("Castellar", 45))
-    titleLabel.grid()
-    titleLabel.place(x=750, y=50, anchor="center")
+    mainTitle(framePersonalUsage)
 
     # Carly: GUI entry box that asks for user input:
     # the question:
-    userEnergyLabel = Label(framePersonalUsage, text="What was your energy usage for this month?", font=("sylfaen", 35))
-    userEnergyLabel.grid()
-    userEnergyLabel.place(x=750, y=150, anchor="center")
+    label("userEnergyLabel", framePersonalUsage, "What was your energy usage for this month?", 35, 750, 150)
     # the box itself:
     userEnergyInput = Entry(framePersonalUsage, textvariable=personalEnergy, bd=5, width=50, relief="sunken", font=("sylfaen"))
     userEnergyInput.grid(column=1, row=1)
     userEnergyInput.place(x=750, y=220, anchor="center", height=50)
     #energy units:
-    units = Label(framePersonalUsage, text="kWh", font=("sylfaen", 20))
-    units.grid()
-    units.place(x=980, y=200)
+    label("units", framePersonalUsage, "kWh", 20, 1000, 220)
 
 
-    # Carly: ENTER button that pulls up the comparison of the user's personal energy
+    #ENTER button that pulls up the comparison of the user's personal energy
     # usage to that of their state's:
     def enterButtonUserEnergy():
         btn3 = tkinter.Button(text='ENTER', bd=5, command=(lambda: PowerBill(stateName)))
         btn3.place(x=750, y=280, anchor='center')
 
-    # written by Nathan = compares the user's personal energy usage
-    # to that of their state's so that they can get feedback on
-    # if they need to reduce their carbon footprint more
+    ''' written by Nathan = compares the user's personal energy usage
+     to that of their state's so that they can get feedback on
+     if they need to reduce their carbon footprint more'''
     def PowerBill(stateIn):
         #defining variables in function by different titles, so we could work
         #on code separately
@@ -139,99 +130,47 @@ def next_clicked():
         average = avgStateEnergy
 
         #reprinting label for state's energy use
-        stateAvgUsageLabel = Label(framePersonalUsage, text=(f"{state}'s Average Energy Usage: {average}kWh"),
-                                   font=("sylfaen", 35))
-        stateAvgUsageLabel.grid()
-        stateAvgUsageLabel.place(x=750, y=350, anchor="center")
+        label("stateAvgUsageLabel", framePersonalUsage, (f"{state}'s Average Energy Usage: {average}kWh"), 35, 750, 350)
 
         #label for user's energy usage
-        userUsageLabel = Label(framePersonalUsage, text=(f"Your Average Energy Usage: {power}kWh"),
-                               font=("sylfaen", 35))
-        userUsageLabel.grid()
-        userUsageLabel.place(x=750, y=420, anchor="center")
+        label("userUsageLabel", framePersonalUsage, (f"Your Average Energy Usage: {power}kWh"), 35, 750, 420)
 
         #comparing the user's personal energy usage to the state
         if power < average:
-            comparisonLabel = Label(framePersonalUsage,
-                                    text=(f"Monthly Energy Usage of {power}kWh is lower than state average."),
-                                    font=("sylfaen", 30))
-            comparisonLabel.grid()
-            comparisonLabel.place(x=750, y=490, anchor="center")
-
-            congratsLabel = Label(framePersonalUsage, text=(f"Good job! You are limiting CO2 output!"),
-                                  font=("sylfaen", 30))
-            congratsLabel.grid()
-            congratsLabel.place(x=750, y=560, anchor="center")
-            next2Button()
-            framePersonalUsage.pack()
-
+            label("comparisonLabel", framePersonalUsage, (f"Monthly Energy Usage of {power}kWh is lower than state average."), 30, 750, 490)
+            label("congratsLabel", framePersonalUsage, (f"Good job! You are limiting CO2 output!"), 30, 750, 560)
 
         elif power > average:
-            comparisonLabel = Label(framePersonalUsage,
-                                    text=(f"Caution! Monthly Power Usage of {power}kWh is higher than state average."),
-                                    font=("sylfaen", 30))
-            comparisonLabel.grid()
-            comparisonLabel.place(x=750, y=490, anchor="center")
-            fixLabel = Label(framePersonalUsage,
-                             text=(f"Let's see what we can do to lower that usage!"),
-                             font=("sylfaen", 30))
-            fixLabel.grid()
-            fixLabel.place(x=750, y=560, anchor="center")
-            next2Button()
-            framePersonalUsage.pack()
-
+            label("comparisonLabel", framePersonalUsage, (f"Caution! Monthly Power Usage of {power}kWh is higher than state average."), 30, 750, 490)
+            label("fixLabel", framePersonalUsage, (f"Let's see what we can do to lower that usage!"), 30, 750, 560)
 
         else:
-            comparisonLabel = Label(framePersonalUsage,
-                                    text=(f"Monthly Power Usage of {power}kWh is equal to state average."),
-                                    font=("sylfaen", 30))
-            comparisonLabel.grid()
-            comparisonLabel.place(x=750, y=490, anchor="center")
-            next2Button()
-            framePersonalUsage.pack()
+            label("comparisonLabel", framePersonalUsage, (f"Monthly Power Usage of {power}kWh is equal to state average."), 30, 750, 490)
+
+        next2Button()
+        framePersonalUsage.pack()
 
     enterButtonUserEnergy()
 
 
-#Carly: window for user's habits that eventually provides feedback
+#Window 3: checkboxes of user's habits that provide carbon reducing feedback
+#base code by Julia, GUI implementation by Carly
 def next2_clicked():
     framePersonalUsage.destroy()
     frameHabits = Frame(root, width=1500, height=800)
     frameHabits.grid()
     frameHabits.tkraise()
 
-
     # main title
-    underline = Label(frameHabits, text="_____________________________________________", font=("Castellar", 45))
-    underline.grid()
-    underline.place(x=750, y=70, anchor="center")
-    titleLabel = Label(frameHabits, text="Let's reduce your carbon footprint!", font=("Castellar", 45))
-    titleLabel.grid()
-    titleLabel.place(x=750, y=50, anchor="center")
+    mainTitle(frameHabits)
 
-
-    # Carly: GUI entry box that asks for user input:
-    # the question:
-    instructionsLabel = Label(frameHabits, text="Check the boxes of habits that you do!", font=("sylfaen", 35))
-    instructionsLabel.grid()
-    instructionsLabel.place(x=750, y=150, anchor="center")
+    # instructions for the checkboxes
+    label("instructionsLabel", frameHabits, "Check the boxes of habits that you do!", 35, 750, 150)
+    label("basedLabel", frameHabits, "We'll give you some feedback on how to reduce your energy usage based on your answers.", 25, 750, 220)
     frameHabits.pack()
 
-    # Carly: GUI entry box that asks for user input:
-    # the question:
-    basedLabel = Label(frameHabits, text="We'll give you some feedback on how to reduce your energy usage based on your answers.", font=("sylfaen", 25))
-    basedLabel.grid()
-    basedLabel.place(x=750, y=220, anchor="center")
-
-    def foot(image):
-        img = Image.open(image)
-        imageResize = img.resize((300,300), Image.ANTIALIAS)
-        image = ImageTk.PhotoImage(imageResize)
-
-        imageLabel = Label(frameHabits, image=image)
-        imageLabel.image = image
-        imageLabel.place(x=150, y=450, anchor="center")
-    foot(r'IMG_1041.PNG')
+    #empty foot as base image
+    foot(r'IMG_1041.PNG', frameHabits)
 
     #checkbox feedback
     def c1_On(xValue, yValue, button, feedbackPhrase):
@@ -242,18 +181,23 @@ def next2_clicked():
                                font=("sylfaen", 14))
         habit1feedback.grid()
         habit1feedback.place(x=xValue+400, y=yValue)
+
+        '''based on how many checkboxes are checked, 
+        the foot is filled accordingly (trying to reduce carbon footprint)'''
         def footfill():
             if footFill == 0:
-                foot(r'IMG_1041.PNG')
+                foot(r'IMG_1041.PNG', frameHabits)
             elif footFill == 1:
-                foot(r'IMG_1042.PNG')
+                foot(r'IMG_1042.PNG', frameHabits)
             elif footFill == 2:
-                foot(r'IMG_1043.PNG')
+                foot(r'IMG_1043.PNG', frameHabits)
             elif footFill == 3:
-                foot(r'IMG_1044.PNG')
+                foot(r'IMG_1044.PNG', frameHabits)
             else:
-                foot(r'IMG_1045.PNG')
+                foot(r'IMG_1045.PNG', frameHabits)
 
+        '''tkinter doesn't allow size changes of traditional checkboxes,
+        so I had to make them out of regular buttons with labels'''
         if button['text']=='x':
             footFill -= 1
             button['text']=''
@@ -271,11 +215,8 @@ def next2_clicked():
     c1 = tkinter.Button(text=c1Text, font = tkinter.font.Font(size=15), bd=5, command=(lambda: c1_On(10,325,c1,'- Remember to shut your lights off when you '
                                                                              'leave that room or your house.')), height = 1, width = 3)
     c1.place(x=300, y=300, anchor='center')
-    c1QuestionLabel = Label(frameHabits,
-                        text='Do you always leave your lights on?',
-                        font=("sylfaen", 25))
-    c1QuestionLabel.grid()
-    c1QuestionLabel.place(x=350, y=275)
+    label("c1QuestionLabel", frameHabits, 'Do you always leave your lights on?', 25, 595, 295)
+
 
     #2nd checkbox
     global c2Text
@@ -283,11 +224,8 @@ def next2_clicked():
                                                                               ' room; open a window instead for a breeze;'
                                                                               ' close your curtains to block heat from sun.')), height=1, width=3)
     c2.place(x=300, y=400, anchor='center')
-    c2QuestionLabel = Label(frameHabits,
-                            text='Do you keep fans running?',
-                            font=("sylfaen", 25))
-    c2QuestionLabel.grid()
-    c2QuestionLabel.place(x=350, y=375)
+    label("c2QuestionLabel", frameHabits, 'Do you keep fans running?', 25, 535, 395)
+
 
     # 3nd checkbox
     global c3Text
@@ -295,30 +233,24 @@ def next2_clicked():
                                                                                'the way off after you use them; turn your water off when you '
                                                                                  'brush your teeth.')), height=1, width=3)
     c3.place(x=300, y=500, anchor='center')
-    c3QuestionLabel = Label(frameHabits,
-                            text='Do you leave your water running?',
-                            font=("sylfaen", 25))
-    c3QuestionLabel.grid()
-    c3QuestionLabel.place(x=350, y=475)
+    label("c3QuestionLabel", frameHabits, 'Do you leave your water running?', 25, 585, 495)
+
 
     # 4th checkbox
     global c4Text
     c4 = tkinter.Button(text=c4Text, font = tkinter.font.Font(size=15), bd=5, command=(lambda: c1_On(10, 625, c4, '- When not using appliances, shut them off'
                                                                                ' instead of letting them run all day for convenience.')), height=1, width=3)
     c4.place(x=300, y=600, anchor='center')
-    c4QuestionLabel = Label(frameHabits,
-                            text='Do you leave nonessential appliances on (coffee maker, lamps, etc.)?',
-                            font=("sylfaen", 25))
-    c4QuestionLabel.grid()
-    c4QuestionLabel.place(x=350, y=575)
+    label("c4QuestionLabel", frameHabits, 'Do you leave nonessential appliances on (coffee maker, lamps, etc.)?', 25, 815, 595)
     frameHabits.pack()
 
-    # Carly: the function for the NEXT button that will
-    # pull up the final summary window
+    '''Carly: the function for the NEXT button that will
+    pull up the final summary window'''
     def finishedButton():
         btn4 = tkinter.Button(text='DONE', bd=5, command=(lambda: finished_clicked()))
         btn4.place(x=750, y=700, anchor='center')
 
+    #Carly: window 4: summary of carbon reduction message
     def finished_clicked():
         frameHabits.destroy()
         finishFrame = Frame(root, width=1500, height=800)
@@ -326,40 +258,21 @@ def next2_clicked():
         finishFrame.tkraise()
 
         # main title
-        underline = Label(finishFrame, text="_____________________________________________", font=("Castellar", 45))
-        underline.grid()
-        underline.place(x=750, y=70, anchor="center")
-        titleLabel = Label(finishFrame, text="Let's reduce your carbon footprint!", font=("Castellar", 45))
-        titleLabel.grid()
-        titleLabel.place(x=750, y=50, anchor="center")
+        mainTitle(finishFrame)
 
         # summary:
-        thankYouLabel = Label(finishFrame, text="Thank you for seeing what you can "
-                                                "\ndo to reduce your carbon footprint!", font=("sylfaen", 40))
-        thankYouLabel.grid()
-        thankYouLabel.place(x=750, y=200, anchor="center")
+        label("thankYouLabel", finishFrame, "Thank you for seeing what you can "
+                                                "\ndo to reduce your carbon footprint!", 40, 750, 200)
         finishFrame.pack()
 
-        awarenessLabel = Label(finishFrame, text="Awareness through small adjustments "
-                                                 "\nis the first step to greater change!",
-                             font=("sylfaen", 30))
-        awarenessLabel.grid()
-        awarenessLabel.place(x=750, y=365, anchor="center")
+        label("awarenessLabel", finishFrame, "Awareness through small adjustments "
+                                                 "\nis the first step to greater change!", 30, 750, 365)
         finishFrame.pack()
 
-        def foot(image, x,y):
-            img = Image.open(image)
-            imageResize = img.resize((300, 300), Image.ANTIALIAS)
-            image = ImageTk.PhotoImage(imageResize)
 
-            imageLabel = Label(finishFrame, image=image)
-            imageLabel.image = image
-            imageLabel.place(x=x, y=y, anchor="center")
-
-        #feet
-        foot(r'IMG_1045.PNG', 500, 600)
-        foot(r'IMG_1041.PNG', 1000, 600)
-
+        #feet pics
+        foot(r'IMG_1045.PNG', finishFrame, 500, 600)
+        foot(r'IMG_1041.PNG', finishFrame, 1000, 600)
 
         arrow = Label(finishFrame, text="--->", font=("sylfaen", 35), fg="grey")
         arrow.grid()
@@ -370,31 +283,63 @@ def next2_clicked():
 
     finishedButton()
 
+#label function to reduce code for GUI text:
+def label(labelTitle, frame, text, fontSize, x, y, font="sylfaen"):
+    labelTitle = Label(frame, text=text, font=(font, fontSize))
+    labelTitle.grid()
+    labelTitle.place(x=x, y=y, anchor="center")
 
-#Carly: GUI base
-#root = ttkthemes.ThemedTk(theme='black')
+#label fuction for main title specifically:
+def mainTitle(frame):
+    label("underline", frame, "_____________________________________________", 45, 750, 70, "Castellar")
+    label("titleLabel", frame, "Let's reduce your carbon footprint!", 45, 750, 50, "Castellar")
+
+#function for opening and resizing the feet pics:
+def foot(image, frame, x=150, y=450):
+    img = Image.open(image)
+    imageResize = img.resize((300, 300), Image.ANTIALIAS)
+    image = ImageTk.PhotoImage(imageResize)
+
+    imageLabel = Label(frame, image=image)
+    imageLabel.image = image
+    imageLabel.place(x=x, y=y, anchor="center")
+
+#function for the ENTER button to submit state name!
+def enterButton():
+    btn = tkinter.Button(text = 'ENTER', bd = 5, command=(lambda: btn_clicked()))
+    btn.place(x = 750, y = 330, anchor = 'center')
+
+#the function for the NEXT button that will
+#pull up a request for the user's own electricity usage
+def next1Button():
+    btn2 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next_clicked()))
+    btn2.place(x = 750, y = 535, anchor = 'center')
+
+#the function for the NEXT button that will
+#pull up the checkboxes for user's habits
+def next2Button():
+    btn3 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next2_clicked()))
+    btn3.place(x = 750, y = 620, anchor = 'center')
+
+
+#GUI base
 root = tkinter.Tk()
 sv_ttk.set_theme('dark')
 root.title('GUI')
 root.geometry('1500x800')
 
-#Carly: GUI intro title --> tells the user what the program is going to do:
-underline = Label(root, text = "_____________________________________________", font=("Castellar", 45))
-underline.grid()
-underline.place(x = 750, y = 70, anchor="center")
-titleLabel = Label(root, text = "Let's reduce your carbon footprint!", font=("Castellar", 45))
-titleLabel.grid()
-titleLabel.place(x = 750, y = 50, anchor="center")
+#GUI intro title --> tells the user what the program is going to do:
+mainTitle(root)
 
-#Carly: Empty GUI label for the print statement of the state energy usage.
-#I made this so that if the user wants to try to input different states,
-#the print statement saying the energy usage will actually change rather
-#than printing another label on top
+'''Empty GUI label for the print statement of the state energy usage.
+I made this so that if the user wants to try to input different states,
+the print statement saying the energy usage will actually change rather
+than printing another label on top.'''
 avgStateUsage = Label(root, text=f"", font=("sylfaen", 35))
 avgStateUsage.grid()
 avgStateUsage.place(x=750, y=390, anchor="center")
 
-#Carly: declaring string variable for storing stateName
+#declaring string variable for storing stateName
 name = tkinter.StringVar(root)
 avgStateEnergy = None
 stateName = None
@@ -406,7 +351,7 @@ c3Text = ""
 c4Text = ""
 footFill = 0
 
-#Carly: GUI entry box that asks for user input:
+#GUI entry box that asks for user input:
     #the question:
 stateInputLabel = Label(root, text = "What state do you live in?", font=("sylfaen", 35))
 stateInputLabel.grid()
@@ -417,34 +362,11 @@ stateNameInput.grid(column =1, row =1)
 stateNameInput.place(x = 750, y = 270, anchor = "center", height= 50)
 
 
-#Carly: function for the ENTER button to submit state name!
-def enterButton():
-    btn = tkinter.Button(text = 'ENTER', bd = 5, command=(lambda: btn_clicked()))
-    btn.place(x = 750, y = 330, anchor = 'center')
-
-
-#Carly:the function for the NEXT button that will
-#pull up a request for the user's own electricity usage
-def next1Button():
-    btn2 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next_clicked()))
-    btn2.place(x = 750, y = 535, anchor = 'center')
-
-
-#Carly: the function for the NEXT button that will
-#pull up the checkboxes for user's habits
-def next2Button():
-    btn3 = tkinter.Button(text = 'NEXT', bd = 5, command=(lambda: next2_clicked()))
-    btn3.place(x = 750, y = 620, anchor = 'center')
-
-
-
-
-#Carly: calls the ENTER button function so that the button
-# appears and operates on the GUI
+#calls the ENTER button function so that the button
+# appears and operates on the GUI to submit state name
 enterButton()
 
-
-#Carly: makes sure the window displays in an infinite loop
+#makes sure the window displays in an infinite loop
 # until closed out by user
 root.mainloop()
 
