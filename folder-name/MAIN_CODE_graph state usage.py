@@ -109,7 +109,7 @@ def next_clicked():
     userEnergyInput.grid(column=1, row=1)
     userEnergyInput.place(x=750, y=220, anchor="center", height=50)
     #energy units:
-    label("units", framePersonalUsage, "kWh", 20, 1000, 220)
+    label("units", framePersonalUsage, "kWh", 20, 1050, 220)
 
 
     #ENTER button that pulls up the comparison of the user's personal energy

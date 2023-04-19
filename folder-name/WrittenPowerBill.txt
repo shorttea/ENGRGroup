@@ -1,9 +1,0 @@
-Customer Name:
-Carly
-------------------------------------------------------------------------------------------------------------------------------------------------------------
-Alabama
-Avg. Power Usage 1145kWt.
-Caution! Monthly Power Usage of 76 is higher than state average
-
-REMINDER
-Reminder to turn off help. Doing so will reduce your power usage and limit your CO2 output
